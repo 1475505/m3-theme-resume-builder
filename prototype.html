@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3 Resume — 陈明远</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<style>
+/* ================================================
+   M3 RESUME TEMPLATE — PROTOTYPE
+   ================================================ */
+
+/* --- Reset & Base --- */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+/* --- M3 Design Tokens --- */
+:root {
+  --md-font-body: 'Roboto', 'Noto Sans SC', sans-serif;
+  --md-font-display: 'Roboto', 'Noto Sans SC', sans-serif;
+
+  /* Elevation shadows */
+  --md-elevation-1: 0 1px 3px 1px rgba(0,0,0,.08), 0 1px 2px 0 rgba(0,0,0,.04);
+  --md-elevation-2: 0 2px 6px 2px rgba(0,0,0,.08), 0 1px 2px 0 rgba(0,0,0,.04);
+  --md-elevation-3: 0 4px 8px 3px rgba(0,0,0,.08), 0 1px 3px 0 rgba(0,0,0,.06);
+
+  /* Shape */
+  --md-shape-xs: 4px;
+  --md-shape-sm: 8px;
+  --md-shape-md: 12px;
+  --md-shape-lg: 16px;
+  --md-shape-xl: 28px;
+  --md-shape-full: 9999px;
+
+  /* Spacing */
+  --sp-2: 2px; --sp-4: 4px; --sp-6: 6px; --sp-8: 8px;
+  --sp-10: 10px; --sp-12: 12px; --sp-16: 16px; --sp-20: 20px;
+  --sp-24: 24px; --sp-32: 32px; --sp-48: 48px;
+}
+
+/* --- M3 Color Tokens (defaults, overridden by JS) --- */
+body {
+  --md-primary: #6750A4;
+  --md-on-primary: #FFFFFF;
+  --md-primary-container: #EADDFF;
+  --md-on-primary-container: #21005D;
+  --md-secondary: #625B71;
+  --md-on-secondary: #FFFFFF;
+  --md-secondary-container: #E8DEF8;
+  --md-on-secondary-container: #1D192B;
+  --md-tertiary: #7D5260;
+  --md-tertiary-container: #FFD8E4;
+  --md-on-tertiary-container: #31111D;
+  --md-error: #B3261E;
+  --md-surface: #FFFBFE;
+  --md-on-surface: #1C1B1F;
+  --md-on-surface-variant: #49454F;
+  --md-surface-variant: #E7E0EC;
+  --md-surface-container-lowest: #FFFFFF;
+  --md-surface-container-low: #F7F2FA;
+  --md-surface-container: #F3EDF7;
+  --md-surface-container-high: #ECE6F0;
+  --md-surface-container-highest: #E6E0E9;
+  --md-surface-dim: #DED8E1;
+  --md-surface-bright: #FFFBFE;
+  --md-outline: #79747E;
+  --md-outline-variant: #CAC4D0;
+  --md-inverse-surface: #313033;
+  --md-inverse-on-surface: #F4EFF4;
+  --md-inverse-primary: #D0BCFF;
+  --md-scrim: #000000;
+
+  /* Derived utility */
+  --md-primary-08: color-mix(in srgb, var(--md-primary) 8%, transparent);
+  --md-primary-12: color-mix(in srgb, var(--md-primary) 12%, transparent);
+  --md-primary-container-60: color-mix(in srgb, var(--md-primary-container) 60%, transparent);
+
+  font-family: var(--md-font-body);
+  background: var(--md-surface-dim);
+  color: var(--md-on-surface);
+  transition: background-color .35s ease, color .35s ease;
+  line-height: 1.5;
+}
+
+/* ================================================
+   TOOLBAR
+   ================================================ */
+.toolbar {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--md-shape-full);
+  padding: 8px 8px 8px 20px;
+  box-shadow: var(--md-elevation-2);
+  transition: background-color .35s ease, border-color .35s ease;
+  white-space: nowrap;
+}
+.toolbar-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--md-on-surface-variant);
+  letter-spacing: .3px;
+}
+.toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--md-outline-variant);
+  flex-shrink: 0;
+}
+.color-swatches {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--md-shape-full);
+  border: 2.5px solid transparent;
+  cursor: pointer;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  outline: none;
+  position: relative;
+}
+.swatch:hover { transform: scale(1.15); }
+.swatch.active {
+  border-color: var(--md-on-surface);
+  box-shadow: 0 0 0 2px var(--md-surface-container-high);
+}
+.swatch.active::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0,0,0,.3);
+}
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--md-shape-full);
+  border: none;
+  background: transparent;
+  color: var(--md-on-surface-variant);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color .2s ease, color .2s ease;
+  outline: none;
+}
+.icon-btn:hover {
+  background: var(--md-primary-08);
+  color: var(--md-primary);
+}
+.icon-btn .material-symbols-outlined { font-size: 20px; }
+
+/* ================================================
+   A4 PAGE
+   ================================================ */
+.page-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 80px 24px 48px;
+  min-height: 100vh;
+}
+.a4-page {
+  width: 210mm;
+  min-height: 297mm;
+  background: var(--md-surface);
+  border-radius: 2px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08), 0 0 1px rgba(0,0,0,.1);
+  overflow: hidden;
+  transition: background-color .35s ease, box-shadow .35s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ================================================
+   RESUME — HEADER
+   ================================================ */
+.resume-header {
+  background: var(--md-primary-container);
+  padding: 28px 28px 22px;
+  position: relative;
+  overflow: hidden;
+  transition: background-color .35s ease;
+}
+.resume-header::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, var(--md-primary-08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-top {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-16);
+  margin-bottom: var(--sp-16);
+}
+.header-name {
+  font-family: var(--md-font-display);
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--md-on-primary-container);
+  line-height: 1.1;
+  letter-spacing: -.5px;
+  transition: color .35s ease;
+}
+.header-title {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--md-on-primary-container);
+  opacity: .75;
+  padding-bottom: 4px;
+  transition: color .35s ease;
+}
+.header-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+}
+.contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  color: var(--md-on-primary-container);
+  transition: color .35s ease;
+}
+.contact-item .material-symbols-outlined {
+  font-size: 15px;
+  opacity: .7;
+}
+.contact-item a:hover { text-decoration: underline; }
+
+/* ================================================
+   RESUME — BODY
+   ================================================ */
+.resume-body {
+  padding: 20px 28px 28px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-16);
+}
+
+/* --- Section --- */
+.section { display: flex; flex-direction: column; }
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-10);
+  margin-bottom: var(--sp-12);
+}
+.section-bar {
+  width: 3px;
+  height: 20px;
+  border-radius: 2px;
+  background: var(--md-primary);
+  flex-shrink: 0;
+  transition: background-color .35s ease;
+}
+.section-title {
+  font-family: var(--md-font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--md-primary);
+  letter-spacing: .2px;
+  transition: color .35s ease;
+}
+
+/* --- Summary --- */
+.summary-text {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--md-on-surface);
+  transition: color .35s ease;
+}
+
+/* --- Skills: shared --- */
+.skill-section { flex: 1; }
+
+/* --- Skills: List View --- */
+.skill-list {
+  display: flex;
+  flex-direction: column;
+}
+.skill-list-group { margin-bottom: var(--sp-12); }
+.skill-list-group:last-child { margin-bottom: 0; }
+.skill-list-group-header {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--md-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  margin-bottom: var(--sp-2);
+  padding-left: 14px;
+  transition: color .35s ease;
+}
+.skill-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  padding: 9px 14px;
+  border-radius: var(--md-shape-sm);
+  transition: background-color .2s ease;
+}
+.skill-list-item:hover {
+  background: var(--md-primary-08);
+}
+.skill-info { flex: 1; min-width: 0; }
+.skill-headline {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+}
+.skill-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--md-on-surface);
+  transition: color .35s ease;
+}
+.skill-proficiency {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: var(--md-shape-full);
+  line-height: 1.6;
+  letter-spacing: .3px;
+  white-space: nowrap;
+  transition: background-color .35s ease, color .35s ease;
+}
+.skill-proficiency--expert {
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+}
+.skill-proficiency--proficient {
+  background: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+.skill-proficiency--familiar {
+  background: var(--md-surface-container-high);
+  color: var(--md-on-surface-variant);
+}
+.skill-supporting {
+  font-size: 12px;
+  color: var(--md-on-surface-variant);
+  margin-top: 2px;
+  line-height: 1.55;
+  transition: color .35s ease;
+}
+
+/* --- Skills: Card View --- */
+.skill-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-10);
+}
+.skill-card {
+  background: var(--md-surface-container-low);
+  border-radius: var(--md-shape-md);
+  padding: 16px 18px;
+  box-shadow: var(--md-elevation-1);
+  transition: background-color .35s ease, box-shadow .35s ease;
+}
+.skill-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  margin-bottom: var(--sp-4);
+}
+.skill-card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--md-shape-sm);
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color .35s ease, color .35s ease;
+}
+.skill-card-icon .material-symbols-outlined { font-size: 18px; }
+.skill-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--md-on-surface);
+  transition: color .35s ease;
+}
+.skill-card-desc {
+  font-size: 12px;
+  color: var(--md-on-surface-variant);
+  margin-bottom: var(--sp-10);
+  line-height: 1.55;
+  transition: color .35s ease;
+}
+.skill-card-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.skill-card-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  padding: 4px 0;
+}
+.skill-card-row .skill-name { font-size: 13px; white-space: nowrap; flex-shrink: 0; }
+.skill-card-row .skill-supporting { font-size: 11.5px; margin-top: 0; flex: 1; min-width: 0; }
+
+/* --- View Toggle --- */
+.view-toggle {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--md-shape-full);
+  background: transparent;
+  color: var(--md-on-surface-variant);
+  font-size: 11px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .2s ease;
+  outline: none;
+  white-space: nowrap;
+}
+.view-toggle:hover {
+  background: var(--md-primary-08);
+  border-color: var(--md-primary);
+  color: var(--md-primary);
+}
+.view-toggle .material-symbols-outlined { font-size: 15px; }
+
+/* View state toggling */
+.skill-section[data-view="cards"] .skill-list { display: none; }
+.skill-section[data-view="list"] .skill-cards { display: none; }
+
+/* --- Chip (used in project stack) --- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: var(--md-shape-sm);
+  background: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .2px;
+  transition: background-color .35s ease, color .35s ease;
+  white-space: nowrap;
+}
+.chip--expert {
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  font-weight: 600;
+}
+
+/* --- Experience --- */
+.job-card {
+  background: var(--md-surface-container-low);
+  border-radius: var(--md-shape-md);
+  padding: 16px 18px;
+  box-shadow: var(--md-elevation-1);
+  margin-bottom: var(--sp-10);
+  transition: background-color .35s ease, box-shadow .35s ease;
+}
+.job-card:last-child { margin-bottom: 0; }
+.job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.job-company {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--md-on-surface);
+  transition: color .35s ease;
+}
+.job-date {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--md-on-surface-variant);
+  background: var(--md-surface-container);
+  padding: 2px 10px;
+  border-radius: var(--md-shape-full);
+  transition: background-color .35s ease, color .35s ease;
+}
+.job-role {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--md-primary);
+  margin-bottom: var(--sp-8);
+  transition: color .35s ease;
+}
+.job-highlights { padding: 0; }
+.job-highlights li {
+  position: relative;
+  padding-left: 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--md-on-surface);
+  margin-bottom: 4px;
+  transition: color .35s ease;
+}
+.job-highlights li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--md-shape-full);
+  background: var(--md-primary);
+  opacity: .6;
+  transition: background-color .35s ease;
+}
+.job-highlights li:last-child { margin-bottom: 0; }
+
+/* --- Projects --- */
+.project-card {
+  background: var(--md-surface);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--md-shape-md);
+  padding: 16px 18px;
+  margin-bottom: var(--sp-10);
+  transition: background-color .35s ease, border-color .35s ease;
+}
+.project-card:last-child { margin-bottom: 0; }
+.project-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+.project-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--md-on-surface);
+  transition: color .35s ease;
+}
+.project-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--md-on-primary-container);
+  background: var(--md-primary-container);
+  padding: 2px 8px;
+  border-radius: var(--md-shape-full);
+  transition: background-color .35s ease, color .35s ease;
+}
+.project-meta {
+  display: flex;
+  gap: var(--sp-16);
+  font-size: 12px;
+  color: var(--md-on-surface-variant);
+  margin-bottom: var(--sp-8);
+  transition: color .35s ease;
+}
+.project-meta a:hover { text-decoration: underline; color: var(--md-primary); }
+.project-meta .material-symbols-outlined { font-size: 14px; vertical-align: -2px; margin-right: 2px; }
+.project-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--md-on-surface);
+  margin-bottom: var(--sp-8);
+  transition: color .35s ease;
+}
+.project-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.project-stack .chip {
+  height: 24px;
+  padding: 0 10px;
+  font-size: 11px;
+  background: var(--md-surface-container-high);
+  color: var(--md-on-surface-variant);
+}
+
+/* --- Education --- */
+.edu-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.edu-school {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--md-on-surface);
+  transition: color .35s ease;
+}
+.edu-date {
+  font-size: 12px;
+  color: var(--md-on-surface-variant);
+  transition: color .35s ease;
+}
+.edu-detail {
+  font-size: 13px;
+  color: var(--md-on-surface-variant);
+  margin-top: 3px;
+  transition: color .35s ease;
+}
+
+/* --- Footer watermark --- */
+.resume-footer {
+  margin-top: auto;
+  padding-top: var(--sp-12);
+  text-align: center;
+  font-size: 10px;
+  color: var(--md-outline);
+  letter-spacing: .5px;
+  transition: color .35s ease;
+}
+
+/* ================================================
+   RESPONSIVE
+   ================================================ */
+@media (max-width: 860px) {
+  .page-wrapper { padding: 72px 8px 32px; }
+  .a4-page { width: 100%; min-height: auto; border-radius: 0; }
+  .toolbar { top: 8px; padding: 6px 6px 6px 14px; gap: 8px; }
+  .toolbar-label { display: none; }
+}
+
+/* ================================================
+   PRINT
+   ================================================ */
+@page {
+  size: 210mm 297mm;
+  margin: 0;
+}
+@media print {
+  html, body { background: white !important; }
+  .toolbar { display: none !important; }
+  .page-wrapper {
+    padding: 0;
+    min-height: 0;
+  }
+  .a4-page {
+    width: 210mm;
+    min-height: 297mm;
+    box-shadow: none;
+    border-radius: 0;
+    page-break-after: always;
+  }
+  .job-card { break-inside: avoid; }
+  .project-card { break-inside: avoid; }
+  .section { break-inside: avoid; }
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .resume-footer { display: none; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ====== TOOLBAR ====== -->
+<nav class="toolbar" id="toolbar">
+  <span class="toolbar-label">M3 Resume</span>
+  <div class="toolbar-divider"></div>
+  <div class="color-swatches" id="swatches">
+    <button class="swatch active" data-hue="265" data-s="35" data-name="紫罗兰" style="background:#6750A4" title="紫罗兰"></button>
+    <button class="swatch" data-hue="215" data-s="72" data-name="深海蓝" style="background:#2563EB" title="深海蓝"></button>
+    <button class="swatch" data-hue="175" data-s="60" data-name="青松绿" style="background:#0D9488" title="青松绿"></button>
+    <button class="swatch" data-hue="150" data-s="42" data-name="翡翠绿" style="background:#2D8659" title="翡翠绿"></button>
+    <button class="swatch" data-hue="25" data-s="65" data-name="琥珀橙" style="background:#C2610C" title="琥珀橙"></button>
+  </div>
+  <div class="toolbar-divider"></div>
+  <button class="icon-btn" id="darkToggle" title="切换深色模式">
+    <span class="material-symbols-outlined">dark_mode</span>
+  </button>
+  <button class="icon-btn" id="printBtn" title="打印 / 导出 PDF">
+    <span class="material-symbols-outlined">print</span>
+  </button>
+</nav>
+
+<!-- ====== A4 PAGE ====== -->
+<main class="page-wrapper">
+<div class="a4-page">
+
+  <!-- HEADER -->
+  <header class="resume-header">
+    <div class="header-top">
+      <h1 class="header-name">陈明远</h1>
+      <span class="header-title">高级后端工程师 · 5 年</span>
+    </div>
+    <div class="header-contact">
+      <span class="contact-item">
+        <span class="material-symbols-outlined">phone</span>181-8888-6666
+      </span>
+      <span class="contact-item">
+        <span class="material-symbols-outlined">mail</span>mingyuan.chen@gmail.com
+      </span>
+      <span class="contact-item">
+        <span class="material-symbols-outlined">location_on</span>北京
+      </span>
+      <a class="contact-item" href="#">
+        <span class="material-symbols-outlined">code</span>github.com/chenmydev
+      </a>
+      <a class="contact-item" href="#">
+        <span class="material-symbols-outlined">article</span>mingyuan.dev
+      </a>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <div class="resume-body">
+
+    <!-- PROFESSIONAL SUMMARY -->
+    <section class="section">
+      <div class="section-header">
+        <div class="section-bar"></div>
+        <h2 class="section-title">专业概述</h2>
+      </div>
+      <p class="summary-text">5 年后端开发经验，专注于高并发分布式系统设计与实现。曾主导日均千万级请求的核心系统架构优化，具备从 0 到 1 搭建中间件平台的完整经验。活跃开源贡献者，个人项目累计获得 3,500+ GitHub Stars。擅长使用 Go 和 Java 构建云原生微服务，对系统性能调优和可观测性有深入实践。</p>
+    </section>
+
+    <!-- TECHNICAL SKILLS -->
+    <section class="section">
+      <div class="section-header">
+        <div class="section-bar"></div>
+        <h2 class="section-title">专业技能</h2>
+        <button class="view-toggle" id="skillViewToggle" title="切换展示形式">
+          <span class="material-symbols-outlined">grid_view</span>
+          <span class="view-toggle-label">卡片视图</span>
+        </button>
+      </div>
+
+      <div class="skill-section" data-view="list" id="skillSection">
+
+        <!-- ===== LIST VIEW ===== -->
+        <div class="skill-list">
+          <div class="skill-list-group">
+            <div class="skill-list-group-header">编程语言</div>
+            <div class="skill-list-item">
+              <div class="skill-info">
+                <div class="skill-headline">
+                  <span class="skill-name">Go</span>
+                  <span class="skill-proficiency skill-proficiency--expert">精通</span>
+                </div>
+                <div class="skill-supporting">4 年 · 自研高性能 RPC 框架与分布式调度平台，单节点吞吐 50 万 QPS</div>
+              </div>
+            </div>
+            <div class="skill-list-item">
+              <div class="skill-info">
+                <div class="skill-headline">
+                  <span class="skill-name">Java</span>
+                  <span class="skill-proficiency skill-proficiency--expert">精通</span>
+                </div>
+                <div class="skill-supporting">5 年 · Spring Boot / Dubbo 体系，主导阿里云中间件治理平台开发</div>
+              </div>
+            </div>
+            <div class="skill-list-item">
+              <div class="skill-info">
+                <div class="skill-headline">
+                  <span class="skill-name">Python</span>
+                  <span class="skill-proficiency skill-proficiency--proficient">熟练</span>
+                </div>
+                <div class="skill-supporting">3 年 · 运维自动化脚本、数据分析与压测工具开发</div>
+              </div>
+            </div>
+            <div class="skill-list-item">
+              <div class="skill-info">
+                <div class="skill-headline">
+                  <span class="skill-name">TypeScript</span>
+                  <span class="skill-proficiency skill-proficiency--familiar">熟悉</span>
+                </div>
+                <div class="skill-supporting">1 年 · 内部工具前端与配置中心 Web 管理界面开发</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-list-group">
+            <div class="skill-list-group-header">数据库 &amp; 中间件</div>
+            <div class="skill-list-item">
+              <div class="skill-info">
+                <div class="skill-headline">
+                  <span class="skill-name">MySQL</span>
+                  <span class="skill-proficiency skill-proficiency--expert">精通</span>
+                </div>
+                <div class="skill-supporting">5 年 · 千万级分库分表方案设计，慢查询优化与索引治理经验丰富</div>
+              </div>
+            </div>
+            <div class="skill-list-item">
+              <div class="skill-info">
+                <div class="skill-headline">
+                  <span class="skill-name">Redis</span>
+                  <span class="skill-proficiency skill-proficiency--expert">精通</span>
+                </div>
+                <div class="skill-supporting">4 年 · 多级缓存架构设计与分布式锁方案，P99 延迟优化 8 倍</div>
+              </div>
+            </div>
+            <div class="skill-list-item">
+              <div class="skill-info">
+                <div class="skill-headline">
+                  <span class="skill-name">Kafka</span>
+                  <span class="skill-proficiency skill-proficiency--proficient">熟练</span>
+                </div>
+                <div class="skill-supporting">3 年 · 异步解耦与数据管道建设，支撑日均数十万条消息吞吐</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-list-group">
+            <div class="skill-list-group-header">微服务 &amp; 基础设施</div>
+            <div class="skill-list-item">
+              <div class="skill-info">
+                <div class="skill-headline">
+                  <span class="skill-name">Dubbo + Nacos</span>
+                  <span class="skill-proficiency skill-proficiency--proficient">熟练</span>
+                </div>
+                <div class="skill-supporting">2 年 · 微服务治理平台核心开发，服务注册发现与配置动态管理</div>
+              </div>
+            </div>
+            <div class="skill-list-item">
+              <div class="skill-info">
+                <div class="skill-headline">
+                  <span class="skill-name">Kubernetes</span>
+                  <span class="skill-proficiency skill-proficiency--proficient">熟练</span>
+                </div>
+                <div class="skill-supporting">2 年 · 容器编排与 Helm Chart 部署，管理生产集群 50+ 服务</div>
+              </div>
+            </div>
+            <div class="skill-list-item">
+              <div class="skill-info">
+                <div class="skill-headline">
+                  <span class="skill-name">Prometheus + Grafana</span>
+                  <span class="skill-proficiency skill-proficiency--proficient">熟练</span>
+                </div>
+                <div class="skill-supporting">3 年 · 可观测性体系搭建，自定义仪表盘与告警规则设计</div>
+              </div>
+            </div>
+            <div class="skill-list-item">
+              <div class="skill-info">
+                <div class="skill-headline">
+                  <span class="skill-name">ELK Stack</span>
+                  <span class="skill-proficiency skill-proficiency--familiar">熟悉</span>
+                </div>
+                <div class="skill-supporting">2 年 · 日志采集与链路追踪，线上问题快速定位与根因分析</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== CARD VIEW ===== -->
+        <div class="skill-cards">
+          <div class="skill-card">
+            <div class="skill-card-header">
+              <div class="skill-card-icon"><span class="material-symbols-outlined">terminal</span></div>
+              <span class="skill-card-title">编程语言</span>
+            </div>
+            <p class="skill-card-desc">主力语言 Go 与 Java，擅长高并发后端开发与系统架构设计</p>
+            <div class="skill-card-items">
+              <div class="skill-card-row">
+                <span class="skill-name">Go</span>
+                <span class="skill-proficiency skill-proficiency--expert">精通</span>
+                <span class="skill-supporting">自研 RPC 框架与调度平台，单节点 50 万 QPS</span>
+              </div>
+              <div class="skill-card-row">
+                <span class="skill-name">Java</span>
+                <span class="skill-proficiency skill-proficiency--expert">精通</span>
+                <span class="skill-supporting">Spring Boot / Dubbo 体系，阿里云中间件经验</span>
+              </div>
+              <div class="skill-card-row">
+                <span class="skill-name">Python</span>
+                <span class="skill-proficiency skill-proficiency--proficient">熟练</span>
+                <span class="skill-supporting">运维自动化与压测工具</span>
+              </div>
+              <div class="skill-card-row">
+                <span class="skill-name">TypeScript</span>
+                <span class="skill-proficiency skill-proficiency--familiar">熟悉</span>
+                <span class="skill-supporting">内部工具前端开发</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-card-header">
+              <div class="skill-card-icon"><span class="material-symbols-outlined">database</span></div>
+              <span class="skill-card-title">数据库 &amp; 中间件</span>
+            </div>
+            <p class="skill-card-desc">关系型与 NoSQL 均有深入实践，擅长性能调优与架构设计</p>
+            <div class="skill-card-items">
+              <div class="skill-card-row">
+                <span class="skill-name">MySQL</span>
+                <span class="skill-proficiency skill-proficiency--expert">精通</span>
+                <span class="skill-supporting">分库分表 · 慢查询优化 · 索引治理</span>
+              </div>
+              <div class="skill-card-row">
+                <span class="skill-name">Redis</span>
+                <span class="skill-proficiency skill-proficiency--expert">精通</span>
+                <span class="skill-supporting">多级缓存 · 分布式锁 · P99 优化 8 倍</span>
+              </div>
+              <div class="skill-card-row">
+                <span class="skill-name">Kafka</span>
+                <span class="skill-proficiency skill-proficiency--proficient">熟练</span>
+                <span class="skill-supporting">异步解耦 · 数据管道 · 日均数十万消息</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-card-header">
+              <div class="skill-card-icon"><span class="material-symbols-outlined">cloud</span></div>
+              <span class="skill-card-title">微服务 &amp; 基础设施</span>
+            </div>
+            <p class="skill-card-desc">完整云原生实践经验，从服务治理到可观测性体系搭建</p>
+            <div class="skill-card-items">
+              <div class="skill-card-row">
+                <span class="skill-name">Dubbo + Nacos</span>
+                <span class="skill-proficiency skill-proficiency--proficient">熟练</span>
+                <span class="skill-supporting">服务治理 · 配置管理</span>
+              </div>
+              <div class="skill-card-row">
+                <span class="skill-name">Kubernetes</span>
+                <span class="skill-proficiency skill-proficiency--proficient">熟练</span>
+                <span class="skill-supporting">容器编排 · Helm · 集群管理</span>
+              </div>
+              <div class="skill-card-row">
+                <span class="skill-name">Prometheus + Grafana</span>
+                <span class="skill-proficiency skill-proficiency--proficient">熟练</span>
+                <span class="skill-supporting">可观测性 · 仪表盘 · 告警</span>
+              </div>
+              <div class="skill-card-row">
+                <span class="skill-name">ELK Stack</span>
+                <span class="skill-proficiency skill-proficiency--familiar">熟悉</span>
+                <span class="skill-supporting">日志分析 · 链路追踪</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- WORK EXPERIENCE -->
+    <section class="section">
+      <div class="section-header">
+        <div class="section-bar"></div>
+        <h2 class="section-title">工作经历</h2>
+      </div>
+
+      <div class="job-card">
+        <div class="job-card-header">
+          <span class="job-company">字节跳动 · 基础架构部</span>
+          <span class="job-date">2022.03 — 至今</span>
+        </div>
+        <div class="job-role">高级后端工程师</div>
+        <ul class="job-highlights">
+          <li>主导推荐系统核心链路性能优化，引入多级缓存架构与连接池治理，P99 延迟从 1200ms 降至 150ms，QPS 提升 3 倍</li>
+          <li>设计并落地分布式任务调度平台，基于 Go + etcd 实现，日均处理 2000 万+ 任务，SLA 99.99%</li>
+          <li>推动 Go 微服务最佳实践在团队落地，统一错误码与链路追踪规范，线上故障率降低 60%</li>
+        </ul>
+      </div>
+
+      <div class="job-card">
+        <div class="job-card-header">
+          <span class="job-company">阿里云 · 中间件团队</span>
+          <span class="job-date">2020.07 — 2022.02</span>
+        </div>
+        <div class="job-role">后端工程师</div>
+        <ul class="job-highlights">
+          <li>参与企业级微服务治理平台开发，基于 Dubbo + Nacos 实现服务注册发现与配置动态管理</li>
+          <li>独立完成分布式限流组件研发，采用滑动窗口 + Redis 预扣减方案，支撑全公司 API 网关日均 5 亿次调用</li>
+          <li>优化核心服务启动流程，通过懒加载与并行初始化将冷启动时间从 180s 缩短至 45s</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section">
+      <div class="section-header">
+        <div class="section-bar"></div>
+        <h2 class="section-title">项目经历</h2>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-name">go-fast-rpc</span>
+          <span class="project-badge">★ 2.3k Stars</span>
+        </div>
+        <div class="project-meta">
+          <a href="#"><span class="material-symbols-outlined">link</span>github.com/chenmydev/go-fast-rpc</a>
+          <span>核心维护者</span>
+        </div>
+        <p class="project-desc">高性能 RPC 框架，支持服务发现、负载均衡和熔断降级。采用自研序列化协议，较 gRPC 在特定场景下吞吐量提升 40%，已在多家企业生产环境落地。单节点吞吐量达 50 万 QPS。</p>
+        <div class="project-stack">
+          <span class="chip">Go</span>
+          <span class="chip">Protobuf</span>
+          <span class="chip">etcd</span>
+          <span class="chip">Netpoll</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-name">distributed-conf</span>
+          <span class="project-badge">★ 1.2k Stars</span>
+        </div>
+        <div class="project-meta">
+          <a href="#"><span class="material-symbols-outlined">link</span>github.com/chenmydev/distributed-conf</a>
+          <span>作者</span>
+        </div>
+        <p class="project-desc">分布式配置中心，基于 Raft 共识算法实现配置强一致性。支持配置版本管理与灰度发布，内置 Web 管理界面与完整的权限控制体系，已获 Apache 2.0 开源许可。</p>
+        <div class="project-stack">
+          <span class="chip">Java</span>
+          <span class="chip">Raft</span>
+          <span class="chip">RocksDB</span>
+          <span class="chip">Vue.js</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="section">
+      <div class="section-header">
+        <div class="section-bar"></div>
+        <h2 class="section-title">教育背景</h2>
+      </div>
+      <div class="edu-row">
+        <span class="edu-school">北京大学 · 计算机科学与技术 · 硕士</span>
+        <span class="edu-date">2018.09 — 2020.06</span>
+      </div>
+      <p class="edu-detail">研究方向：分布式系统 ｜ 发表 SCI 论文 2 篇 ｜ GPA 3.8/4.0</p>
+    </section>
+
+  </div><!-- /resume-body -->
+
+  <div class="resume-footer">BUILT WITH MATERIAL DESIGN 3</div>
+
+</div><!-- /a4-page -->
+</main>
+
+<script>
+/* ================================================
+   M3 COLOR GENERATOR (HSL → M3 Tonal Approximation)
+   ================================================ */
+
+function hslToHex(h, s, l) {
+  h = ((h % 360) + 360) % 360;
+  s /= 100; l /= 100;
+  const a = s * Math.min(l, 1 - l);
+  const f = n => {
+    const k = (n + h / 30) % 12;
+    const c = l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+    return Math.round(Math.max(0, Math.min(1, c)) * 255);
+  };
+  return '#' + [f(0), f(8), f(4)]
+    .map(v => v.toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Generate an M3-like color scheme from a seed hue and saturation.
+ * Uses HSL with a tone-dependent saturation curve to approximate
+ * the HCT (Hue-Chroma-Tone) color space used by Material 3.
+ */
+function generateScheme(seedHue, seedSat) {
+  seedHue = ((seedHue % 360) + 360) % 360;
+
+  // Saturation factor at each tone level (0–100).
+  // M3's HCT naturally desaturates near black and white;
+  // this curve replicates that behaviour.
+  const sf = t => {
+    if (t <= 5)  return 0.15;
+    if (t <= 15) return 0.45;
+    if (t <= 25) return 0.72;
+    if (t <= 45) return 1.00;
+    if (t <= 55) return 0.88;
+    if (t <= 70) return 0.58;
+    if (t <= 85) return 0.35;
+    if (t <= 95) return 0.18;
+    return 0.10;
+  };
+
+  // Lightness for a given M3 tone (0→black, 100→white)
+  const tl = t => t;
+
+  const c = (h, s, t) => hslToHex(h, s * sf(t), tl(t));
+
+  // Neutral hue is pulled toward seed hue (M3 behaviour)
+  const nH = seedHue;
+  const nS = seedSat * 0.08;   // very desaturated
+  const nvS = seedSat * 0.16;  // slightly more saturated
+
+  return {
+    // --- Primary ---
+    primary:              c(seedHue, seedSat, 40),
+    onPrimary:            '#ffffff',
+    primaryContainer:     c(seedHue, seedSat, 90),
+    onPrimaryContainer:   c(seedHue, seedSat, 10),
+    inversePrimary:       c(seedHue, seedSat, 80),
+
+    // --- Secondary ---
+    secondary:            c(seedHue, seedSat * 0.45, 40),
+    onSecondary:          '#ffffff',
+    secondaryContainer:   c(seedHue, seedSat * 0.45, 90),
+    onSecondaryContainer: c(seedHue, seedSat * 0.45, 10),
+
+    // --- Tertiary (hue +60°) ---
+    tertiary:             c(seedHue + 60, seedSat * 0.55, 40),
+    onTertiary:           '#ffffff',
+    tertiaryContainer:    c(seedHue + 60, seedSat * 0.55, 90),
+    onTertiaryContainer:  c(seedHue + 60, seedSat * 0.55, 10),
+
+    // --- Error ---
+    error:                '#B3261E',
+    onError:              '#ffffff',
+    errorContainer:       '#F9DEDC',
+    onErrorContainer:     '#410E0B',
+
+    // --- Neutral / Surface ---
+    surface:                  c(nH, nS, 98),
+    onSurface:                c(nH, nS, 10),
+    surfaceVariant:           c(nH, nvS, 90),
+    onSurfaceVariant:         c(nH, nvS, 30),
+    surfaceContainerLowest:   '#ffffff',
+    surfaceContainerLow:      c(nH, nS, 96),
+    surfaceContainer:         c(nH, nS, 94),
+    surfaceContainerHigh:     c(nH, nS, 92),
+    surfaceContainerHighest:  c(nH, nS, 90),
+    surfaceDim:               c(nH, nS, 87),
+    surfaceBright:            c(nH, nS, 98),
+    inverseSurface:           c(nH, nS, 20),
+    inverseOnSurface:         c(nH, nS, 95),
+
+    // --- Outline ---
+    outline:            c(nH, nvS, 50),
+    outlineVariant:     c(nH, nvS, 80),
+
+    scrim: '#000000',
+  };
+}
+
+function generateDarkScheme(seedHue, seedSat) {
+  seedHue = ((seedHue % 360) + 360) % 360;
+
+  const sf = t => {
+    if (t <= 5)  return 0.15;
+    if (t <= 15) return 0.45;
+    if (t <= 25) return 0.72;
+    if (t <= 45) return 1.00;
+    if (t <= 55) return 0.88;
+    if (t <= 70) return 0.58;
+    if (t <= 85) return 0.35;
+    if (t <= 95) return 0.18;
+    return 0.10;
+  };
+  const tl = t => t;
+  const c = (h, s, t) => hslToHex(h, s * sf(t), tl(t));
+
+  const nH = seedHue;
+  const nS = seedSat * 0.08;
+  const nvS = seedSat * 0.16;
+
+  return {
+    primary:              c(seedHue, seedSat, 80),
+    onPrimary:            c(seedHue, seedSat, 20),
+    primaryContainer:     c(seedHue, seedSat, 30),
+    onPrimaryContainer:   c(seedHue, seedSat, 90),
+    inversePrimary:       c(seedHue, seedSat, 40),
+
+    secondary:            c(seedHue, seedSat * 0.45, 80),
+    onSecondary:          c(seedHue, seedSat * 0.45, 20),
+    secondaryContainer:   c(seedHue, seedSat * 0.45, 30),
+    onSecondaryContainer: c(seedHue, seedSat * 0.45, 90),
+
+    tertiary:             c(seedHue + 60, seedSat * 0.55, 80),
+    onTertiary:           c(seedHue + 60, seedSat * 0.55, 20),
+    tertiaryContainer:    c(seedHue + 60, seedSat * 0.55, 30),
+    onTertiaryContainer:  c(seedHue + 60, seedSat * 0.55, 90),
+
+    error:                '#F2B8B5',
+    onError:              '#601410',
+    errorContainer:       '#8C1D18',
+    onErrorContainer:     '#F9DEDC',
+
+    surface:                  c(nH, nS, 6),
+    onSurface:                c(nH, nS, 90),
+    surfaceVariant:           c(nH, nvS, 30),
+    onSurfaceVariant:         c(nH, nvS, 80),
+    surfaceContainerLowest:   c(nH, nS, 4),
+    surfaceContainerLow:      c(nH, nS, 10),
+    surfaceContainer:         c(nH, nS, 12),
+    surfaceContainerHigh:     c(nH, nS, 17),
+    surfaceContainerHighest:  c(nH, nS, 22),
+    surfaceDim:               c(nH, nS, 6),
+    surfaceBright:            c(nH, nS, 24),
+    inverseSurface:           c(nH, nS, 90),
+    inverseOnSurface:         c(nH, nS, 20),
+
+    outline:            c(nH, nvS, 60),
+    outlineVariant:     c(nH, nvS, 30),
+
+    scrim: '#000000',
+  };
+}
+
+/* ================================================
+   THEME APPLICATION
+   ================================================ */
+
+let currentHue = 265;
+let currentSat = 35;
+let isDark = false;
+
+function applyTheme(hue, sat, dark) {
+  currentHue = hue;
+  currentSat = sat;
+  isDark = dark;
+
+  const scheme = dark
+    ? generateDarkScheme(hue, sat)
+    : generateScheme(hue, sat);
+
+  const root = document.body;
+  const map = {
+    primary: '--md-primary',
+    onPrimary: '--md-on-primary',
+    primaryContainer: '--md-primary-container',
+    onPrimaryContainer: '--md-on-primary-container',
+    inversePrimary: '--md-inverse-primary',
+    secondary: '--md-secondary',
+    onSecondary: '--md-on-secondary',
+    secondaryContainer: '--md-secondary-container',
+    onSecondaryContainer: '--md-on-secondary-container',
+    tertiary: '--md-tertiary',
+    onTertiary: '--md-on-tertiary',
+    tertiaryContainer: '--md-tertiary-container',
+    onTertiaryContainer: '--md-on-tertiary-container',
+    error: '--md-error',
+    onError: '--md-on-error',
+    errorContainer: '--md-error-container',
+    onErrorContainer: '--md-on-error-container',
+    surface: '--md-surface',
+    onSurface: '--md-on-surface',
+    surfaceVariant: '--md-surface-variant',
+    onSurfaceVariant: '--md-on-surface-variant',
+    surfaceContainerLowest: '--md-surface-container-lowest',
+    surfaceContainerLow: '--md-surface-container-low',
+    surfaceContainer: '--md-surface-container',
+    surfaceContainerHigh: '--md-surface-container-high',
+    surfaceContainerHighest: '--md-surface-container-highest',
+    surfaceDim: '--md-surface-dim',
+    surfaceBright: '--md-surface-bright',
+    inverseSurface: '--md-inverse-surface',
+    inverseOnSurface: '--md-inverse-on-surface',
+    outline: '--md-outline',
+    outlineVariant: '--md-outline-variant',
+    scrim: '--md-scrim',
+  };
+
+  for (const [key, cssVar] of Object.entries(map)) {
+    if (scheme[key]) root.style.setProperty(cssVar, scheme[key]);
+  }
+
+  // Update dark mode icon
+  const icon = document.querySelector('#darkToggle .material-symbols-outlined');
+  icon.textContent = dark ? 'light_mode' : 'dark_mode';
+}
+
+/* ================================================
+   EVENT HANDLERS
+   ================================================ */
+
+document.getElementById('swatches').addEventListener('click', e => {
+  const swatch = e.target.closest('.swatch');
+  if (!swatch) return;
+
+  document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+  swatch.classList.add('active');
+
+  const hue = parseInt(swatch.dataset.hue);
+  const sat = parseInt(swatch.dataset.s);
+  applyTheme(hue, sat, isDark);
+});
+
+document.getElementById('darkToggle').addEventListener('click', () => {
+  applyTheme(currentHue, currentSat, !isDark);
+});
+
+document.getElementById('printBtn').addEventListener('click', () => {
+  window.print();
+});
+
+// Skills view toggle
+let skillView = 'list';
+document.getElementById('skillViewToggle').addEventListener('click', () => {
+  const section = document.getElementById('skillSection');
+  const icon = document.querySelector('#skillViewToggle .material-symbols-outlined');
+  const label = document.querySelector('#skillViewToggle .view-toggle-label');
+
+  skillView = skillView === 'list' ? 'cards' : 'list';
+  section.dataset.view = skillView;
+
+  if (skillView === 'cards') {
+    icon.textContent = 'view_list';
+    label.textContent = '列表视图';
+  } else {
+    icon.textContent = 'grid_view';
+    label.textContent = '卡片视图';
+  }
+});
+
+// Init
+applyTheme(265, 35, false);
+</script>
+</body>
+</html>

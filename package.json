@@ -1,0 +1,23 @@
+{
+  "name": "m3-theme-resume-builder",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Material Design 3 themed resume builder with HCT color generation and Puppeteer PDF export",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@material/material-color-utilities": "^0.3.0",
+    "nuxt": "^3.16.0",
+    "vue": "^3.5.0",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^2.0.0",
+    "puppeteer": "^24.0.0",
+    "typescript": "^5.7.0"
+  }
+}
