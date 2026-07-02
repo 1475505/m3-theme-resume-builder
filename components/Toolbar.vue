@@ -6,11 +6,23 @@ const emit = defineEmits<{
 }>()
 
 const exporting = ref(false)
+const customColor = ref(currentSeed.value)
+const colorPickerRef = ref<HTMLInputElement | null>(null)
 
 async function handleExport() {
   exporting.value = true
   emit('export-pdf')
   setTimeout(() => { exporting.value = false }, 2000)
+}
+
+function openCustomPicker() {
+  colorPickerRef.value?.click()
+}
+
+function onCustomColor(e: Event) {
+  const input = e.target as HTMLInputElement
+  customColor.value = input.value
+  setSeedColor(input.value)
 }
 </script>
 
@@ -27,6 +39,20 @@ async function handleExport() {
         :title="color.name"
         :style="{ background: color.hex }"
         @click="setSeedColor(color.hex)"
+      />
+      <button
+        class="swatch swatch--custom"
+        title="自定义颜色"
+        @click="openCustomPicker"
+      >
+        <span class="material-symbols-outlined">palette</span>
+      </button>
+      <input
+        ref="colorPickerRef"
+        type="color"
+        class="toolbar-color-picker-hidden"
+        :value="customColor"
+        @input="onCustomColor"
       />
     </div>
     <div class="toolbar-divider" />

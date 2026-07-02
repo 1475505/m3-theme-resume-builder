@@ -363,6 +363,7 @@ function sectionIcon(type: SectionType) {
                     placeholder="年限"
                     @input="updateSkillYears(idx, gi, si, ($event.target as HTMLInputElement).value)"
                   />
+                  <span style="font-size: 12px; color: var(--md-on-surface-variant); white-space: nowrap;">年</span>
                   <button
                     class="skill-proficiency"
                     :class="`skill-proficiency--${skill.proficiency}`"

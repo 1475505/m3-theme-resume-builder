@@ -84,8 +84,8 @@ export const presetColors = [
   { name: '紫罗兰', hex: '#6750A4', hue: 265, sat: 35 },
   { name: '深海蓝', hex: '#2563EB', hue: 215, sat: 72 },
   { name: '青松绿', hex: '#0D9488', hue: 175, sat: 60 },
-  { name: '翡翠绿', hex: '#2D8659', hue: 150, sat: 42 },
   { name: '琥珀橙', hex: '#C2610C', hue: 25, sat: 65 },
+  { name: '玫瑰粉', hex: '#DB2777', hue: 330, sat: 70 },
 ] as const
 
 /**
