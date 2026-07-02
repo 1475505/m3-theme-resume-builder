@@ -27,6 +27,7 @@ export interface Job {
   company: string
   department: string
   role: string
+  introduction: string
   startDate: string
   endDate: string
   highlights: string[]
@@ -36,6 +37,7 @@ export interface Project {
   name: string
   stars: string
   role: string
+  introduction: string
   link: string
   description: string
   stack: string[]
@@ -71,11 +73,13 @@ export const sectionToggleableFields: Record<SectionType, { key: string; label: 
     { key: 'description', label: '描述' },
   ],
   experience: [
+    { key: 'introduction', label: '介绍' },
     { key: 'role', label: '职位' },
     { key: 'date', label: '时间' },
     { key: 'highlights', label: '亮点' },
   ],
   projects: [
+    { key: 'introduction', label: '介绍' },
     { key: 'stars', label: 'Stars' },
     { key: 'role', label: '角色' },
     { key: 'link', label: '链接' },
@@ -176,6 +180,7 @@ export function createEmptyJob(): Job {
     company: '',
     department: '',
     role: '',
+    introduction: '',
     startDate: '',
     endDate: '',
     highlights: [''],
@@ -187,6 +192,7 @@ export function createEmptyProject(): Project {
     name: '',
     stars: '',
     role: '',
+    introduction: '',
     link: '',
     description: '',
     stack: [],
@@ -276,6 +282,7 @@ export const resumeData: ResumeData = {
         company: '字节跳动 · 基础架构部',
         department: '',
         role: '高级后端工程师',
+        introduction: '负责推荐系统核心链路的架构设计与性能优化，主导分布式任务调度平台从 0 到 1 的建设。',
         startDate: '2022.03',
         endDate: '至今',
         highlights: [
@@ -288,6 +295,7 @@ export const resumeData: ResumeData = {
         company: '阿里云 · 中间件团队',
         department: '',
         role: '后端工程师',
+        introduction: '参与企业级微服务治理平台研发，负责分布式限流组件与核心服务启动流程优化。',
         startDate: '2020.07',
         endDate: '2022.02',
         highlights: [
@@ -302,6 +310,7 @@ export const resumeData: ResumeData = {
         name: 'go-fast-rpc',
         stars: '2.3k',
         role: '核心维护者',
+        introduction: '高性能 RPC 框架，支持服务发现、负载均衡和熔断降级。',
         link: 'github.com/chenmydev/go-fast-rpc',
         description:
           '高性能 RPC 框架，支持服务发现、负载均衡和熔断降级。采用自研序列化协议，较 gRPC 在特定场景下吞吐量提升 40%，已在多家企业生产环境落地。单节点吞吐量达 50 万 QPS。',
@@ -311,6 +320,7 @@ export const resumeData: ResumeData = {
         name: 'distributed-conf',
         stars: '1.2k',
         role: '作者',
+        introduction: '分布式配置中心，基于 Raft 共识算法实现配置强一致性。',
         link: 'github.com/chenmydev/distributed-conf',
         description:
           '分布式配置中心，基于 Raft 共识算法实现配置强一致性。支持配置版本管理与灰度发布，内置 Web 管理界面与完整的权限控制体系，已获 Apache 2.0 开源许可。',

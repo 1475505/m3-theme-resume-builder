@@ -22,7 +22,20 @@ const STORAGE_KEY = 'm3-resume-data'
 
 function migrateLegacyData(parsed: any): ResumeData {
   if (parsed?.sections && Array.isArray(parsed.sections)) {
-    return parsed as ResumeData
+    const result = parsed as ResumeData
+    // Ensure introduction field exists on all Job and Project items
+    for (const section of result.sections) {
+      if (section.type === 'experience') {
+        for (const job of section.items) {
+          if (job.introduction === undefined) job.introduction = ''
+        }
+      } else if (section.type === 'projects') {
+        for (const project of section.items) {
+          if (project.introduction === undefined) project.introduction = ''
+        }
+      }
+    }
+    return result
   }
   // Migrate old flat format to component-based sections
   return {

@@ -93,5 +93,6 @@ ul { list-style: none; }
     <EditorPanel :data="data" />
     <ResumePage :data="data" />
     <Toolbar @export-pdf="handleExportPDF" />
+    <FormatToolbar />
   </div>
 </template>

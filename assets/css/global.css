@@ -601,6 +601,13 @@ body {
   margin-bottom: var(--sp-8);
   transition: color .35s ease;
 }
+.job-introduction {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--md-on-surface-variant);
+  margin-bottom: var(--sp-8);
+  transition: color .35s ease;
+}
 .job-highlights { padding: 0; }
 .job-highlights li {
   position: relative;
@@ -668,6 +675,13 @@ body {
 .project-meta a:hover { text-decoration: underline; color: var(--md-primary); }
 .project-meta .material-symbols-outlined { font-size: 14px; vertical-align: -2px; margin-right: 2px; }
 .project-meta .brand-icon { width: 14px; height: 14px; vertical-align: -2px; margin-right: 2px; }
+.project-introduction {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--md-on-surface-variant);
+  margin-bottom: var(--sp-4);
+  transition: color .35s ease;
+}
 .project-desc {
   font-size: 13px;
   line-height: 1.7;
@@ -827,8 +841,21 @@ body {
   font-size: 11px;
   font-weight: 600;
   color: var(--md-on-surface-variant);
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 3px;
+}
+.format-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--md-on-tertiary-container);
+  background: var(--md-tertiary-container);
+  border-radius: var(--md-shape-xs);
+  white-space: nowrap;
 }
 .editor-input {
   width: 100%;
@@ -932,6 +959,75 @@ body {
   content: attr(data-placeholder);
   color: var(--md-outline);
   pointer-events: none;
+}
+
+/* Inline rich-text formatting inside editable elements */
+.editable b, .editable strong { font-weight: 700; }
+.editable i, .editable em { font-style: italic; }
+.editable u { text-decoration: underline; }
+.editable b i, .editable b em, .editable strong i, .editable strong em,
+.editable i b, .editable i strong, .editable em b, .editable em strong {
+  font-weight: 700;
+  font-style: italic;
+}
+.editable b u, .editable strong u, .editable u b, .editable u strong {
+  font-weight: 700;
+  text-decoration: underline;
+}
+.editable i u, .editable em u, .editable u i, .editable u em {
+  font-style: italic;
+  text-decoration: underline;
+}
+.editable b i u, .editable b em u, .editable strong i u, .editable strong em u,
+.editable i b u, .editable i strong u, .editable em b u, .editable em strong u,
+.editable u b i, .editable u b em, .editable u strong i, .editable u strong em,
+.editable u i b, .editable u i strong, .editable u em b, .editable u em strong,
+.editable b u i, .editable b u em, .editable strong u i, .editable strong u em,
+.editable i u b, .editable i u strong, .editable em u b, .editable em u strong {
+  font-weight: 700;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+/* Format toolbar */
+.format-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  background: var(--md-surface-container-high);
+  border-radius: var(--md-shape-sm);
+  box-shadow: var(--md-elevation-2);
+  z-index: 1000;
+  user-select: none;
+}
+
+.format-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: var(--md-shape-xs);
+  background: transparent;
+  cursor: pointer;
+  color: var(--md-on-surface);
+  transition: background-color .2s ease;
+}
+
+.format-btn:hover {
+  background: var(--md-surface-container-highest);
+}
+
+.format-btn.active {
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+}
+
+.format-btn .material-symbols-outlined {
+  font-size: 18px;
+  font-variation-settings: 'wght' 500;
 }
 
 /* Prevent editable inline elements from collapsing or clipping in headers */

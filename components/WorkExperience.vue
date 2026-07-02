@@ -37,6 +37,9 @@ function isHidden(field: string) {
       <div v-if="!isHidden('role')" class="job-role">
         <EditableText :modelValue="job.role" @update:modelValue="updateJob(index, ji, 'role', $event)" />
       </div>
+      <p v-if="!isHidden('introduction') && job.introduction" class="job-introduction">
+        <EditableText :modelValue="job.introduction" block @update:modelValue="updateJob(index, ji, 'introduction', $event)" />
+      </p>
       <ul v-if="!isHidden('highlights')" class="job-highlights">
         <li v-for="(h, hi) in job.highlights" :key="hi">
           <EditableText :modelValue="h" block @update:modelValue="updateHighlight(index, ji, hi, $event)" />

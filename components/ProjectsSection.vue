@@ -60,6 +60,9 @@ function onStackInput(pi: number, si: number, e: Event) {
           <EditableText :modelValue="project.role" @update:modelValue="updateProject(index, pi, 'role', $event)" />
         </span>
       </div>
+      <p v-if="!isHidden('introduction') && project.introduction" class="project-introduction">
+        <EditableText :modelValue="project.introduction" block @update:modelValue="updateProject(index, pi, 'introduction', $event)" />
+      </p>
       <p v-if="!isHidden('description')" class="project-desc">
         <EditableText :modelValue="project.description" block @update:modelValue="updateProject(index, pi, 'description', $event)" />
       </p>

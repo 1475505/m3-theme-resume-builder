@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ResumeData, SectionType, ResumeSection } from '~/data/resume'
 import { sectionToggleableFields } from '~/data/resume'
+import { hasFormatting } from '~/composables/useFormat'
 
 const props = defineProps<{
   data: ResumeData
@@ -282,7 +283,10 @@ function sectionIcon(type: SectionType) {
               <input class="editor-input" :value="section.title" @input="updateSectionTitle(idx, ($event.target as HTMLInputElement).value)" />
             </div>
             <div class="editor-field">
-              <label class="editor-label">概述文本</label>
+              <label class="editor-label">
+                概述文本
+                <span v-if="hasFormatting(section.text)" class="format-badge" title="含富文本格式，请在预览区编辑">已格式化</span>
+              </label>
               <textarea class="editor-textarea" :value="section.text" @input="updateSummary(idx, ($event.target as HTMLTextAreaElement).value)" />
             </div>
           </template>
@@ -402,6 +406,13 @@ function sectionIcon(type: SectionType) {
                 <label class="editor-label">职位</label>
                 <input class="editor-input" :value="job.role" @input="updateJob(idx, ji, 'role', ($event.target as HTMLInputElement).value)" />
               </div>
+              <div class="editor-field">
+                <label class="editor-label">
+                  介绍
+                  <span v-if="hasFormatting(job.introduction)" class="format-badge" title="含富文本格式，请在预览区编辑">已格式化</span>
+                </label>
+                <textarea class="editor-textarea" style="min-height: 40px;" :value="job.introduction" @input="updateJob(idx, ji, 'introduction', ($event.target as HTMLTextAreaElement).value)" />
+              </div>
               <div style="display: flex; gap: 8px;">
                 <div class="editor-field" style="flex: 1;">
                   <label class="editor-label">开始时间</label>
@@ -415,6 +426,7 @@ function sectionIcon(type: SectionType) {
               <div v-for="(h, hi) in job.highlights" :key="hi" class="editor-field">
                 <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 3px;">
                   <label class="editor-label" style="margin: 0; flex: 1;">亮点 {{ hi + 1 }}</label>
+                  <span v-if="hasFormatting(h)" class="format-badge" title="含富文本格式，请在预览区编辑">已格式化</span>
                   <button v-if="job.highlights.length > 1" style="font-size: 10px; color: var(--md-error); background: none; border: none; cursor: pointer;" @click="removeHighlight(idx, ji, hi)">删除</button>
                 </div>
                 <textarea class="editor-textarea" style="min-height: 40px;" :value="h" @input="updateHighlight(idx, ji, hi, ($event.target as HTMLTextAreaElement).value)" />
@@ -454,7 +466,17 @@ function sectionIcon(type: SectionType) {
                 <input class="editor-input" :value="project.link" @input="updateProject(idx, pi, 'link', ($event.target as HTMLInputElement).value)" />
               </div>
               <div class="editor-field">
-                <label class="editor-label">描述</label>
+                <label class="editor-label">
+                  介绍
+                  <span v-if="hasFormatting(project.introduction)" class="format-badge" title="含富文本格式，请在预览区编辑">已格式化</span>
+                </label>
+                <textarea class="editor-textarea" style="min-height: 40px;" :value="project.introduction" @input="updateProject(idx, pi, 'introduction', ($event.target as HTMLTextAreaElement).value)" />
+              </div>
+              <div class="editor-field">
+                <label class="editor-label">
+                  描述
+                  <span v-if="hasFormatting(project.description)" class="format-badge" title="含富文本格式，请在预览区编辑">已格式化</span>
+                </label>
                 <textarea class="editor-textarea" :value="project.description" @input="updateProject(idx, pi, 'description', ($event.target as HTMLTextAreaElement).value)" />
               </div>
               <div class="editor-field">
@@ -491,7 +513,10 @@ function sectionIcon(type: SectionType) {
                 </div>
               </div>
               <div class="editor-field">
-                <label class="editor-label">详情</label>
+                <label class="editor-label">
+                  详情
+                  <span v-if="hasFormatting(edu.detail)" class="format-badge" title="含富文本格式，请在预览区编辑">已格式化</span>
+                </label>
                 <textarea class="editor-textarea" :value="edu.detail" @input="updateEducation(idx, ei, 'detail', ($event.target as HTMLTextAreaElement).value)" />
               </div>
             </div>
@@ -505,7 +530,10 @@ function sectionIcon(type: SectionType) {
               <input class="editor-input" :value="section.title" @input="updateSectionTitle(idx, ($event.target as HTMLInputElement).value)" />
             </div>
             <div class="editor-field">
-              <label class="editor-label">内容</label>
+              <label class="editor-label">
+                内容
+                <span v-if="hasFormatting(section.text)" class="format-badge" title="含富文本格式，请在预览区编辑">已格式化</span>
+              </label>
               <textarea class="editor-textarea" :value="section.text" @input="updateCustom(idx, ($event.target as HTMLTextAreaElement).value)" />
             </div>
           </template>
