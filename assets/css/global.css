@@ -18,6 +18,7 @@ ul { list-style: none; }
   --md-elevation-1: 0 1px 3px 1px rgba(0,0,0,.08), 0 1px 2px 0 rgba(0,0,0,.04);
   --md-elevation-2: 0 2px 6px 2px rgba(0,0,0,.08), 0 1px 2px 0 rgba(0,0,0,.04);
   --md-elevation-3: 0 4px 8px 3px rgba(0,0,0,.08), 0 1px 3px 0 rgba(0,0,0,.06);
+  --md-elevation-page: 0 2px 12px rgba(0,0,0,.08), 0 0 1px rgba(0,0,0,.1);
 
   /* Shape */
   --md-shape-xs: 4px;
@@ -196,6 +197,19 @@ body {
 }
 .icon-btn .material-symbols-outlined { font-size: 20px; }
 
+/* Focus-visible — M3 accessible focus indicators */
+.icon-btn:focus-visible,
+.swatch:focus-visible,
+.view-toggle:focus-visible,
+.pdf-btn:focus-visible,
+.editor-footer-btn:focus-visible,
+.editor-add-btn:focus-visible,
+.section-action-btn:focus-visible,
+.field-toggle-chip:focus-visible {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+}
+
 /* ================================================
    A4 PAGE
    ================================================ */
@@ -216,7 +230,7 @@ body {
   height: auto;
   background: var(--md-surface);
   border-radius: 2px;
-  box-shadow: 0 2px 12px rgba(0,0,0,.08), 0 0 1px rgba(0,0,0,.1);
+  box-shadow: var(--md-elevation-page);
   overflow: visible;
   transition: background-color .35s ease, box-shadow .35s ease;
   display: flex;
@@ -603,7 +617,11 @@ body {
   border-radius: var(--md-shape-md);
   padding: 16px 18px;
   margin-bottom: var(--sp-10);
-  transition: background-color .35s ease, border-color .35s ease;
+  transition: background-color .35s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.job-card:hover {
+  border-color: var(--md-outline);
+  box-shadow: var(--md-elevation-1);
 }
 .job-card:last-child { margin-bottom: 0; }
 .job-card-header {
@@ -687,7 +705,11 @@ body {
   border-radius: var(--md-shape-md);
   padding: 16px 18px;
   margin-bottom: var(--sp-10);
-  transition: background-color .35s ease, border-color .35s ease;
+  transition: background-color .35s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.project-card:hover {
+  border-color: var(--md-outline);
+  box-shadow: var(--md-elevation-1);
 }
 .project-card:last-child { margin-bottom: 0; }
 .project-header {
