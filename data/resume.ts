@@ -228,6 +228,80 @@ export function createEmptySkill(): Skill {
   }
 }
 
+/** Check if a job has no meaningful content */
+export function isJobEmpty(job: Job): boolean {
+  return (
+    !job.company?.trim() &&
+    !job.role?.trim() &&
+    !job.introduction?.trim() &&
+    !job.startDate?.trim() &&
+    !job.endDate?.trim() &&
+    (!job.highlights || job.highlights.every(h => !h.trim())) &&
+    (!job.stack || job.stack.length === 0)
+  )
+}
+
+/** Check if a project has no meaningful content */
+export function isProjectEmpty(project: Project): boolean {
+  return (
+    !project.name?.trim() &&
+    !project.role?.trim() &&
+    !project.introduction?.trim() &&
+    !project.link?.trim() &&
+    !project.description?.trim() &&
+    !project.stars?.trim() &&
+    (!project.highlights || project.highlights.every(h => !h.trim())) &&
+    (!project.stack || project.stack.length === 0)
+  )
+}
+
+/** Check if an education entry has no meaningful content */
+export function isEducationEmpty(edu: Education): boolean {
+  return (
+    !edu.school?.trim() &&
+    !edu.major?.trim() &&
+    !edu.degree?.trim() &&
+    !edu.detail?.trim() &&
+    !edu.startDate?.trim() &&
+    !edu.endDate?.trim()
+  )
+}
+
+/** Check if a skill has no meaningful content */
+export function isSkillEmpty(skill: Skill): boolean {
+  return !skill.name?.trim() && !skill.description?.trim()
+}
+
+/** Check if a skill group has no meaningful content */
+export function isSkillGroupEmpty(group: SkillGroup): boolean {
+  return (
+    !group.category?.trim() &&
+    !group.description?.trim() &&
+    (!group.skills || group.skills.every(s => isSkillEmpty(s)))
+  )
+}
+
+/** Check if a section has no meaningful content (title + body both empty) */
+export function isSectionEmpty(section: ResumeSection): boolean {
+  const titleEmpty = !section.title?.trim()
+  switch (section.type) {
+    case 'summary':
+      return titleEmpty && !section.text?.trim()
+    case 'skills':
+      return titleEmpty && (!section.groups || section.groups.every(g => isSkillGroupEmpty(g)))
+    case 'experience':
+      return titleEmpty && (!section.items || section.items.every(j => isJobEmpty(j)))
+    case 'projects':
+      return titleEmpty && (!section.items || section.items.every(p => isProjectEmpty(p)))
+    case 'education':
+      return titleEmpty && (!section.items || section.items.every(e => isEducationEmpty(e)))
+    case 'custom':
+      return titleEmpty && !section.text?.trim()
+    default:
+      return titleEmpty
+  }
+}
+
 export const resumeData: ResumeData = {
   basics: {
     name: '陈明远',

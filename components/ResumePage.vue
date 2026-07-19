@@ -1,9 +1,19 @@
 <script setup lang="ts">
 import type { ResumeData, ResumeSection } from '~/data/resume'
+import { isSectionEmpty } from '~/data/resume'
 
 const props = defineProps<{
   data: ResumeData
 }>()
+
+const visibleSections = computed(() =>
+  props.data.sections.filter(s => !isSectionEmpty(s))
+)
+
+const headerEmpty = computed(() => {
+  const b = props.data.basics
+  return !b.name?.trim() && !b.title?.trim() && (!b.contacts || b.contacts.every(c => !c.text?.trim()))
+})
 
 const pages = ref<ResumeSection[][]>([])
 const headerHeight = ref(0)
@@ -53,7 +63,7 @@ function splitPages() {
   let currentPage: ResumeSection[] = []
   let currentUsed = 0
 
-  props.data.sections.forEach((section, idx) => {
+  visibleSections.value.forEach((section, idx) => {
     const height = sectionHeights[idx] ?? 0
     const available = result.length === 0 ? firstPageAvailable : nextPageAvailable
 
@@ -102,14 +112,14 @@ function setSectionRef(el: any, idx: number) {
       class="a4-page measure-page"
       aria-hidden="true"
     >
-      <ResumeHeader ref="measureHeader" :basics="data.basics" />
+      <ResumeHeader v-if="!headerEmpty" ref="measureHeader" :basics="data.basics" />
       <div class="resume-body">
         <ResumeSection
-          v-for="(section, idx) in data.sections"
+          v-for="(section, idx) in visibleSections"
           :key="`m-${section.id}`"
           :ref="(el) => setSectionRef(el, idx)"
           :section="section"
-          :index="idx"
+          :index="data.sections.findIndex(s => s.id === section.id)"
         />
       </div>
       <div ref="measureFooter" class="resume-footer">BUILT WITH MATERIAL DESIGN 3</div>
@@ -124,7 +134,7 @@ function setSectionRef(el: any, idx: number) {
         :class="{ 'first-page': pi === 0 }"
         :id="pi === 0 ? 'resume-page' : undefined"
       >
-        <ResumeHeader v-if="pi === 0" :basics="data.basics" />
+        <ResumeHeader v-if="pi === 0 && !headerEmpty" :basics="data.basics" />
         <div class="resume-body">
           <ResumeSection
             v-for="(section, idx) in page"

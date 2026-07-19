@@ -33,7 +33,7 @@ function isHidden(field: string) {
           <EditableText :modelValue="edu.endDate" @update:modelValue="updateEducation(index, ei, 'endDate', $event)" />
         </span>
       </div>
-      <p v-if="!isHidden('detail')" class="edu-detail">
+      <p v-if="!isHidden('detail') && edu.detail" class="edu-detail">
         <EditableText :modelValue="edu.detail" block @update:modelValue="updateEducation(index, ei, 'detail', $event)" />
       </p>
     </div>

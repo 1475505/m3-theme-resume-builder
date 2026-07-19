@@ -461,6 +461,10 @@ body {
   background: var(--md-primary-container);
   color: var(--md-on-primary-container);
 }
+.skill-proficiency--mastered {
+  background: var(--md-tertiary-container);
+  color: var(--md-on-tertiary-container);
+}
 .skill-proficiency--proficient {
   background: var(--md-secondary-container);
   color: var(--md-on-secondary-container);
@@ -468,6 +472,11 @@ body {
 .skill-proficiency--familiar {
   background: var(--md-surface-container-high);
   color: var(--md-on-surface-variant);
+}
+.skill-proficiency--aware {
+  background: var(--md-surface-container-low);
+  color: var(--md-on-surface-variant);
+  opacity: .7;
 }
 .skill-supporting {
   font-size: 12px;
@@ -589,12 +598,12 @@ body {
 
 /* --- Experience --- */
 .job-card {
-  background: var(--md-surface-container-low);
+  background: var(--md-surface);
+  border: 1px solid var(--md-outline-variant);
   border-radius: var(--md-shape-md);
   padding: 16px 18px;
-  box-shadow: var(--md-elevation-1);
   margin-bottom: var(--sp-10);
-  transition: background-color .35s ease, box-shadow .35s ease;
+  transition: background-color .35s ease, border-color .35s ease;
 }
 .job-card:last-child { margin-bottom: 0; }
 .job-card-header {
@@ -657,6 +666,19 @@ body {
   transition: background-color .35s ease;
 }
 .job-highlights li:last-child { margin-bottom: 0; }
+.job-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: var(--sp-6);
+}
+.job-stack .chip {
+  height: 22px;
+  padding: 0 8px;
+  font-size: 11px;
+  background: var(--md-surface-container-high);
+  color: var(--md-on-surface-variant);
+}
 
 /* --- Projects --- */
 .project-card {
@@ -727,6 +749,46 @@ body {
   background: var(--md-surface-container-high);
   color: var(--md-on-surface-variant);
 }
+.project-link-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--md-on-surface-variant);
+  transition: color .2s ease;
+  margin-left: 2px;
+}
+.project-link-inline:hover { color: var(--md-primary); }
+.project-link-inline .brand-icon { width: 13px; height: 13px; }
+.project-link-text {
+  font-size: 12px;
+  color: var(--md-on-surface-variant);
+  transition: color .35s ease;
+}
+.project-highlights { padding: 0; margin-bottom: var(--sp-8); }
+.project-highlights li {
+  position: relative;
+  padding-left: 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--md-on-surface);
+  margin-bottom: 4px;
+  transition: color .35s ease;
+}
+.project-highlights li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--md-shape-full);
+  background: var(--md-primary);
+  opacity: .6;
+  transition: background-color .35s ease;
+}
+.project-highlights li:last-child { margin-bottom: 0; }
 
 /* --- Education --- */
 .edu-row {
@@ -1484,6 +1546,7 @@ body {
   .skill-card,
   .section,
   .edu-row { break-inside: avoid; }
+  .job-card, .project-card, .skill-card { box-shadow: none; }
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;

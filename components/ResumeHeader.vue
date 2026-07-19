@@ -14,7 +14,7 @@ const { updateBasics, updateContact } = useResume()
       <h1 class="header-name">
         <EditableText :modelValue="basics.name" @update:modelValue="updateBasics('name', $event)" />
       </h1>
-      <span class="header-title">
+      <span v-if="basics.title" class="header-title">
         <EditableText :modelValue="basics.title" @update:modelValue="updateBasics('title', $event)" />
       </span>
     </div>

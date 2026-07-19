@@ -28,10 +28,12 @@ function migrateLegacyData(parsed: any): ResumeData {
       if (section.type === 'experience') {
         for (const job of section.items) {
           if (job.introduction === undefined) job.introduction = ''
+          if (!Array.isArray(job.stack)) job.stack = []
         }
       } else if (section.type === 'projects') {
         for (const project of section.items) {
           if (project.introduction === undefined) project.introduction = ''
+          if (!Array.isArray(project.highlights)) project.highlights = []
         }
       }
     }
@@ -87,7 +89,7 @@ if (typeof window !== 'undefined') {
   )
 }
 
-const proficiencyOrder: Skill['proficiency'][] = ['expert', 'proficient', 'familiar']
+const proficiencyOrder: Skill['proficiency'][] = ['expert', 'mastered', 'proficient', 'familiar', 'aware']
 
 const sectionFactories: Record<SectionType, (title?: string) => ResumeSection> = {
   summary: (title) => createSummarySection(title || '专业概述', ''),
@@ -245,6 +247,18 @@ export function useResume() {
     assertSection<ReturnType<typeof createExperienceSection>>(index, 'experience').items[jobIdx].highlights[highlightIdx] = value
   }
 
+  function updateJobStack(index: number, jobIdx: number, stackIdx: number, value: string) {
+    assertSection<ReturnType<typeof createExperienceSection>>(index, 'experience').items[jobIdx].stack[stackIdx] = value
+  }
+
+  function removeJobStack(index: number, jobIdx: number, stackIdx: number) {
+    assertSection<ReturnType<typeof createExperienceSection>>(index, 'experience').items[jobIdx].stack.splice(stackIdx, 1)
+  }
+
+  function addJobStack(index: number, jobIdx: number) {
+    assertSection<ReturnType<typeof createExperienceSection>>(index, 'experience').items[jobIdx].stack.push('')
+  }
+
   // Projects
   function addProject(index: number) {
     assertSection<ReturnType<typeof createProjectsSection>>(index, 'projects').items.push(createEmptyProject())
@@ -268,6 +282,18 @@ export function useResume() {
 
   function addProjectStack(index: number, projIdx: number) {
     assertSection<ReturnType<typeof createProjectsSection>>(index, 'projects').items[projIdx].stack.push('')
+  }
+
+  function addProjectHighlight(index: number, projIdx: number) {
+    assertSection<ReturnType<typeof createProjectsSection>>(index, 'projects').items[projIdx].highlights.push('')
+  }
+
+  function removeProjectHighlight(index: number, projIdx: number, highlightIdx: number) {
+    assertSection<ReturnType<typeof createProjectsSection>>(index, 'projects').items[projIdx].highlights.splice(highlightIdx, 1)
+  }
+
+  function updateProjectHighlight(index: number, projIdx: number, highlightIdx: number, value: string) {
+    assertSection<ReturnType<typeof createProjectsSection>>(index, 'projects').items[projIdx].highlights[highlightIdx] = value
   }
 
   // Education
@@ -328,12 +354,18 @@ export function useResume() {
     addHighlight,
     removeHighlight,
     updateHighlight,
+    updateJobStack,
+    removeJobStack,
+    addJobStack,
     addProject,
     removeProject,
     updateProject,
     updateProjectStack,
     removeProjectStack,
     addProjectStack,
+    addProjectHighlight,
+    removeProjectHighlight,
+    updateProjectHighlight,
     addEducation,
     removeEducation,
     updateEducation,

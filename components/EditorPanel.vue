@@ -14,8 +14,8 @@ const {
   toggleFieldVisibility, isFieldHidden,
   updateSummary, updateSkillsView, updateSkillsCardColumns,
   addSkillGroup, removeSkillGroup, updateSkillGroup, addSkill, removeSkill, updateSkill, updateSkillYears, cycleSkillProficiency,
-  addJob, removeJob, updateJob, addHighlight, removeHighlight, updateHighlight,
-  addProject, removeProject, updateProject,
+  addJob, removeJob, updateJob, addHighlight, removeHighlight, updateHighlight, updateJobStack, removeJobStack, addJobStack,
+  addProject, removeProject, updateProject, addProjectHighlight, removeProjectHighlight, updateProjectHighlight,
   addEducation, removeEducation, updateEducation,
   updateCustom,
   importJSON, exportJSON,
@@ -23,8 +23,10 @@ const {
 
 const proficiencyLabel: Record<string, string> = {
   expert: '精通',
+  mastered: '掌握',
   proficient: '熟练',
   familiar: '熟悉',
+  aware: '了解',
 }
 
 const contactIconOptions = [
@@ -218,7 +220,6 @@ function sectionIcon(type: SectionType) {
                   @input="updateContact(i, ($event.target as HTMLInputElement).value)"
                 />
                 <button
-                  v-if="data.basics.contacts.length > 1"
                   class="editor-contact-remove"
                   title="删除"
                   @click="removeContact(i)"
@@ -395,9 +396,8 @@ function sectionIcon(type: SectionType) {
               <input class="editor-input" :value="section.title" @input="updateSectionTitle(idx, ($event.target as HTMLInputElement).value)" />
             </div>
             <div v-for="(job, ji) in section.items" :key="ji" style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--md-outline-variant);">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-size: 12px; font-weight: 600; color: var(--md-primary);">{{ job.company || '新经历' }}</span>
-                <button v-if="section.items.length > 1" class="editor-add-btn" style="padding: 2px 8px; border-style: solid; color: var(--md-error); border-color: var(--md-error);" @click="removeJob(idx, ji)">删除</button>
+              <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 8px;">
+                <button class="editor-add-btn" style="padding: 2px 8px; border-style: solid; color: var(--md-error); border-color: var(--md-error);" @click="removeJob(idx, ji)">删除</button>
               </div>
               <div class="editor-field">
                 <label class="editor-label">公司 · 部门</label>
@@ -428,11 +428,15 @@ function sectionIcon(type: SectionType) {
                 <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 3px;">
                   <label class="editor-label" style="margin: 0; flex: 1;">亮点 {{ hi + 1 }}</label>
                   <span v-if="hasFormatting(h)" class="format-badge" title="含富文本格式，请在预览区编辑">已格式化</span>
-                  <button v-if="job.highlights.length > 1" style="font-size: 10px; color: var(--md-error); background: none; border: none; cursor: pointer;" @click="removeHighlight(idx, ji, hi)">删除</button>
+                  <button style="font-size: 10px; color: var(--md-error); background: none; border: none; cursor: pointer;" @click="removeHighlight(idx, ji, hi)">删除</button>
                 </div>
                 <textarea class="editor-textarea" style="min-height: 40px;" :value="h" @input="updateHighlight(idx, ji, hi, ($event.target as HTMLTextAreaElement).value)" />
               </div>
               <button class="editor-add-btn" @click="addHighlight(idx, ji)">+ 添加亮点</button>
+              <div class="editor-field">
+                <label class="editor-label">技术栈（逗号分隔）</label>
+                <input class="editor-input" :value="job.stack ? job.stack.join(', ') : ''" @change="updateJob(idx, ji, 'stack', ($event.target as HTMLInputElement).value.split(',').map((s: string) => s.trim()).filter(Boolean))" />
+              </div>
             </div>
             <button class="editor-add-btn" @click="addJob(idx)">+ 添加工作经历</button>
           </template>
@@ -480,9 +484,18 @@ function sectionIcon(type: SectionType) {
                 </label>
                 <textarea class="editor-textarea" :value="project.description" @input="updateProject(idx, pi, 'description', ($event.target as HTMLTextAreaElement).value)" />
               </div>
+              <div v-for="(h, hi) in project.highlights" :key="hi" class="editor-field">
+                <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 3px;">
+                  <label class="editor-label" style="margin: 0; flex: 1;">亮点 {{ hi + 1 }}</label>
+                  <span v-if="hasFormatting(h)" class="format-badge" title="含富文本格式，请在预览区编辑">已格式化</span>
+                  <button style="font-size: 10px; color: var(--md-error); background: none; border: none; cursor: pointer;" @click="removeProjectHighlight(idx, pi, hi)">删除</button>
+                </div>
+                <textarea class="editor-textarea" style="min-height: 40px;" :value="h" @input="updateProjectHighlight(idx, pi, hi, ($event.target as HTMLTextAreaElement).value)" />
+              </div>
+              <button class="editor-add-btn" @click="addProjectHighlight(idx, pi)">+ 添加亮点</button>
               <div class="editor-field">
                 <label class="editor-label">技术栈（逗号分隔）</label>
-                <input class="editor-input" :value="project.stack.join(', ')" @input="updateProject(idx, pi, 'stack', ($event.target as HTMLInputElement).value.split(',').map((s: string) => s.trim()).filter(Boolean))" />
+                <input class="editor-input" :value="project.stack.join(', ')" @change="updateProject(idx, pi, 'stack', ($event.target as HTMLInputElement).value.split(',').map((s: string) => s.trim()).filter(Boolean))" />
               </div>
             </div>
             <button class="editor-add-btn" @click="addProject(idx)">+ 添加项目</button>

@@ -8,7 +8,7 @@ const props = defineProps<{
   hiddenFields: string[]
 }>()
 
-const { updateSectionTitle, updateProject, updateProjectStack, removeProjectStack, addProjectStack } = useResume()
+const { updateSectionTitle, updateProject, updateProjectStack, removeProjectStack, removeProjectHighlight, updateProjectHighlight } = useResume()
 
 function isHidden(field: string) {
   return props.hiddenFields.includes(field)
@@ -45,28 +45,33 @@ function onStackInput(pi: number, si: number, e: Event) {
         <span class="project-name">
           <EditableText :modelValue="project.name" @update:modelValue="updateProject(index, pi, 'name', $event)" />
         </span>
+        <a v-if="!isHidden('link') && project.link" :href="`https://${project.link}`" class="project-link-inline" target="_blank" rel="noopener">
+          <BrandIcon :name="detectLinkIcon(project.link)" />
+          <EditableText :modelValue="project.link" @update:modelValue="updateProject(index, pi, 'link', $event)" />
+        </a>
         <span v-if="!isHidden('stars') && project.stars" class="project-badge">
           &#9733;
           <EditableText :modelValue="project.stars" @update:modelValue="updateProject(index, pi, 'stars', $event)" />
           Stars
         </span>
       </div>
-      <div v-if="!isHidden('link') || !isHidden('role')" class="project-meta">
-        <a v-if="!isHidden('link') && project.link" :href="`https://${project.link}`">
-          <BrandIcon :name="detectLinkIcon(project.link)" />
-          <EditableText :modelValue="project.link" @update:modelValue="updateProject(index, pi, 'link', $event)" />
-        </a>
-        <span v-if="!isHidden('role')">
+      <div v-if="!isHidden('role') && project.role" class="project-meta">
+        <span>
           <EditableText :modelValue="project.role" @update:modelValue="updateProject(index, pi, 'role', $event)" />
         </span>
       </div>
       <p v-if="!isHidden('introduction') && project.introduction" class="project-introduction">
         <EditableText :modelValue="project.introduction" block @update:modelValue="updateProject(index, pi, 'introduction', $event)" />
       </p>
-      <p v-if="!isHidden('description')" class="project-desc">
+      <ul v-if="!isHidden('highlights') && project.highlights && project.highlights.length" class="project-highlights">
+        <li v-for="(h, hi) in project.highlights" :key="hi">
+          <EditableText :modelValue="h" block @update:modelValue="updateProjectHighlight(index, pi, hi, $event)" />
+        </li>
+      </ul>
+      <p v-if="!isHidden('description') && project.description" class="project-desc">
         <EditableText :modelValue="project.description" block @update:modelValue="updateProject(index, pi, 'description', $event)" />
       </p>
-      <div v-if="!isHidden('stack')" class="project-stack">
+      <div v-if="!isHidden('stack') && project.stack && project.stack.length" class="project-stack">
         <span
           v-for="(tech, si) in project.stack"
           :key="tech + si"
@@ -75,7 +80,6 @@ function onStackInput(pi: number, si: number, e: Event) {
           spellcheck="false"
           @input="onStackInput(pi, si, $event)"
         >{{ tech }}</span>
-        <button class="chip project-stack-add" title="添加技术栈" @click="addProjectStack(index, pi)">+</button>
       </div>
     </div>
   </section>

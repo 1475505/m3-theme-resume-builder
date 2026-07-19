@@ -57,6 +57,7 @@ ul { list-style: none; }
 .a4-page + .a4-page { margin-top: 0; }
 .a4-page:last-child { page-break-after: auto; break-after: auto; }
 .job-card, .project-card, .skill-card, .section { break-inside: avoid; page-break-inside: avoid; }
+.job-card, .project-card, .skill-card { box-shadow: none; }
 </style>
 </head>
 <body>${resumeHtml}</body>

@@ -20,8 +20,10 @@ const {
 
 const proficiencyLabel: Record<string, string> = {
   expert: '精通',
+  mastered: '掌握',
   proficient: '熟练',
   familiar: '熟悉',
+  aware: '了解',
 }
 
 function isHidden(field: string) {
@@ -84,7 +86,7 @@ function isHidden(field: string) {
               <EditableText :modelValue="group.category" @update:modelValue="updateSkillGroup(index, gi, 'category', $event)" />
             </span>
           </div>
-          <p v-if="!isHidden('description')" class="skill-card-desc">
+          <p v-if="!isHidden('description') && group.description" class="skill-card-desc">
             <EditableText :modelValue="group.description" block @update:modelValue="updateSkillGroup(index, gi, 'description', $event)" />
           </p>
           <div class="skill-card-items">
@@ -102,7 +104,7 @@ function isHidden(field: string) {
               >
                 {{ proficiencyLabel[skill.proficiency] }}
               </span>
-              <span v-if="!isHidden('description')" class="skill-supporting">
+              <span v-if="!isHidden('description') && skill.description" class="skill-supporting">
                 <EditableText :modelValue="skill.description" @update:modelValue="updateSkill(index, gi, si, 'description', $event)" />
               </span>
             </div>
